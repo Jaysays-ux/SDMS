@@ -1,0 +1,205 @@
+/* ==========================================================================
+   SRI DURGA MEDICAL & GENERAL STORES - RESPONSIVE DESIGN (responsive.css)
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   LAPTOP & TABLETS (max-width: 1024px)
+   -------------------------------------------------------------------------- */
+@media (max-width: 1024px) {
+  .container {
+    padding: 0 20px;
+  }
+  
+  .section-padding {
+    padding: 60px 0;
+  }
+
+  .medicine-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  .footer-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+  }
+
+  /* Product details layout */
+  .product-details-container {
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+  }
+
+  /* Dashboard Grid */
+  .dashboard-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   SMALL TABLETS & PHONES (max-width: 768px)
+   -------------------------------------------------------------------------- */
+@media (max-width: 768px) {
+  :root {
+    --header-height: 70px;
+  }
+
+  .section-header h2 {
+    font-size: 1.8rem;
+  }
+
+  /* Mobile Navbar Toggle */
+  .menu-toggle {
+    display: block;
+    cursor: pointer;
+    font-size: 1.6rem;
+  }
+
+  .nav-links {
+    position: fixed;
+    top: var(--header-height);
+    left: -100%;
+    width: 80%;
+    max-width: 300px;
+    height: calc(100vh - var(--header-height));
+    background-color: var(--card-bg);
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 40px 24px;
+    gap: 24px;
+    box-shadow: 10px 0 20px rgba(0, 0, 0, 0.05);
+    border-right: 1px solid var(--border);
+    transition: var(--transition);
+    z-index: 1000;
+  }
+
+  .nav-links.active {
+    left: 0;
+  }
+
+  .nav-links a {
+    font-size: 1.1rem;
+    width: 100%;
+  }
+
+  /* Mobile grids */
+  .medicine-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  /* Product details */
+  .product-details-container {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  /* Cart page layout */
+  .cart-container {
+    grid-template-columns: 1fr !important;
+    gap: 30px;
+  }
+
+  .cart-table th:nth-child(3),
+  .cart-table td:nth-child(3) {
+    display: none; /* Hide unit price on small screens */
+  }
+
+  /* Upload prescription screen split */
+  .upload-container {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Dashboard Panels */
+  .dashboard-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .dashboard-charts-container {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Hero Section responsive resizing */
+  .hero-slider-item {
+    padding: 40px 0;
+    text-align: center;
+  }
+
+  .hero-content h1 {
+    font-size: 2.2rem !important;
+  }
+
+  .hero-buttons {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   NARROW PHONES (max-width: 480px)
+   -------------------------------------------------------------------------- */
+@media (max-width: 480px) {
+  .section-header h2 {
+    font-size: 1.5rem;
+  }
+
+  .medicine-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    gap: 16px;
+    text-align: center;
+  }
+
+  /* Navigation actions on mobile */
+  .nav-actions {
+    gap: 10px;
+  }
+
+  .logo-text h1 {
+    font-size: 1.1rem;
+  }
+  
+  .logo-icon {
+    width: 36px;
+    height: 36px;
+    font-size: 1.4rem;
+  }
+
+  /* Offers Cards layout */
+  .offers-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Action buttons scaling */
+  .btn {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    width: 100%;
+  }
+
+  .card-actions {
+    flex-direction: column;
+    width: 100%;
+    gap: 6px;
+  }
+
+  .card-actions button,
+  .card-actions a {
+    width: 100%;
+  }
+
+  /* Search controls spacing */
+  .search-controls {
+    flex-direction: column;
+    gap: 12px;
+  }
+}

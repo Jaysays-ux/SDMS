@@ -1,0 +1,168 @@
+/* ==========================================================================
+   SRI DURGA MEDICAL & GENERAL STORES - DARK MODE SYSTEM (darkmode.css)
+   ========================================================================== */
+
+body.dark {
+  --background: #0f172a;       /* Slate-900 dark bg */
+  --card-bg: #1e293b;          /* Slate-800 card bg */
+  --text: #f8fafc;             /* Slate-50 bright text */
+  --text-muted: #94a3b8;       /* Slate-400 muted text */
+  --border: #334155;           /* Slate-700 subtle borders */
+  
+  --primary-light: rgba(22, 163, 74, 0.15);
+  --secondary-light: rgba(37, 99, 235, 0.15);
+}
+
+/* Specific Dark Overrides */
+
+body.dark .navbar {
+  background-color: rgba(15, 23, 42, 0.9);
+  border-bottom: 1px solid var(--border);
+}
+
+body.dark .logo-text span {
+  color: var(--text-muted);
+}
+
+body.dark .card-image-wrapper {
+  background-color: #0f172a;
+  border-bottom: 1px solid var(--border);
+}
+
+body.dark .card-footer {
+  border-top-color: var(--border);
+}
+
+body.dark .btn-icon {
+  background-color: #1e293b;
+  border-color: var(--border);
+  color: var(--text);
+}
+
+body.dark .btn-icon:hover {
+  background-color: var(--border);
+  color: var(--primary);
+}
+
+body.dark .form-control {
+  background-color: #0f172a;
+  border-color: var(--border);
+  color: var(--text);
+}
+
+body.dark .form-control:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.25);
+}
+
+body.dark .modal-box {
+  background-color: #1e293b;
+  border-color: var(--border);
+}
+
+body.dark .footer {
+  background-color: #020617;
+  border-top-color: #0f172a;
+}
+
+body.dark .footer-bottom {
+  border-top-color: #0f172a;
+}
+
+body.dark .cart-table th {
+  background-color: #0f172a;
+  color: var(--white);
+  border-bottom-color: var(--border);
+}
+
+body.dark .cart-table td {
+  border-bottom-color: var(--border);
+}
+
+body.dark .cart-summary-box {
+  background-color: #1e293b;
+  border-color: var(--border);
+}
+
+body.dark .upload-drag-zone {
+  border-color: #475569;
+  background-color: rgba(30, 41, 59, 0.5);
+}
+
+body.dark .upload-drag-zone:hover,
+body.dark .upload-drag-zone.dragover {
+  border-color: var(--primary);
+  background-color: rgba(22, 163, 74, 0.08);
+}
+
+body.dark .product-tabs-header {
+  border-bottom-color: var(--border);
+}
+
+body.dark .tab-btn.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+
+body.dark .tab-content {
+  color: var(--text-muted);
+}
+
+body.dark .dashboard-sidebar {
+  background-color: #1e293b;
+  border-right-color: var(--border);
+}
+
+body.dark .sidebar-link {
+  color: var(--text-muted);
+}
+
+body.dark .sidebar-link:hover,
+body.dark .sidebar-link.active {
+  background-color: rgba(22, 163, 74, 0.1);
+  color: var(--primary);
+}
+
+body.dark .stat-card {
+  background-color: #1e293b;
+  border-color: var(--border);
+}
+
+body.dark .table-box {
+  background-color: #1e293b;
+  border-color: var(--border);
+}
+
+body.dark .table-box th {
+  background-color: #0f172a;
+  border-bottom-color: var(--border);
+}
+
+body.dark .table-box td {
+  border-bottom-color: var(--border);
+}
+
+body.dark .offer-card {
+  background-color: #1e293b;
+  border-color: var(--border);
+}
+
+body.dark .offer-countdown {
+  background-color: #0f172a;
+  border-color: var(--border);
+}
+
+body.dark .scratch-area {
+  background-color: #334155;
+  color: #94a3b8;
+}
+
+body.dark .testimonial-card {
+  background-color: #1e293b;
+  border-color: var(--border);
+}
+
+body.dark .feature-card {
+  background-color: #1e293b;
+  border-color: var(--border);
+}
