@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Details | Sri Durga Medical & General Stores</title>
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Custom Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="css/darkmode.css">
+  <link rel="stylesheet" href="css/animations.css">
+</head>
+<body>
+
+  <!-- Global Loading Spinner -->
+  <div id="global-spinner">
+    <div class="spinner-icon"></div>
+    <span class="spinner-text">Preparing details...</span>
+  </div>
+
+  <!-- STICKY NAVBAR -->
+  <header class="navbar">
+    <div class="container navbar-container">
+      <a href="index.html" class="logo">
+        <div class="logo-icon">
+          <i class="fas fa-prescription-bottle-alt"></i>
+        </div>
+        <div class="logo-text">
+          <h1>Sri Durga</h1>
+          <span data-translate="hero_open_badge">Open 24/7</span>
+        </div>
+      </a>
+
+      <!-- Navigation Links -->
+      <nav class="nav-links">
+        <a href="index.html" data-translate="nav_home">Home</a>
+        <a href="medicines.html" data-translate="nav_medicines">Medicines</a>
+        <a href="upload-prescription.html" data-translate="nav_prescription">Upload Prescription</a>
+        <a href="offers.html" data-translate="nav_offers">Offers</a>
+        <a href="contact.html" data-translate="nav_contact">Contact</a>
+        <a href="dashboard.html" data-translate="nav_dashboard">Admin</a>
+      </nav>
+
+      <!-- Navigation Actions -->
+      <div class="nav-actions">
+        <button id="lang-toggle" class="language-btn">తెలుగు</button>
+        <button id="dark-toggle" class="btn-icon" title="Switch Theme"><i class="fas fa-moon"></i></button>
+        
+        <div class="cart-icon-wrapper">
+          <a href="cart.html" class="btn-icon" title="View Cart">
+            <i class="fas fa-shopping-basket"></i>
+            <span class="cart-count">0</span>
+          </a>
+        </div>
+
+        <a href="https://wa.me/919876543210" target="_blank" class="btn btn-whatsapp" style="padding: 10px 18px; font-size: 0.85rem; display: inline-flex;">
+          <i class="fab fa-whatsapp"></i> <span data-translate="whatsapp_now">WhatsApp Now</span>
+        </a>
+
+        <div class="menu-toggle">
+          <i class="fas fa-bars"></i>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- PRODUCT LAYOUT CONTAINER -->
+  <section class="section-padding" style="background-color: var(--white); min-height: 80vh;">
+    <div class="container">
+      <div style="margin-bottom: 24px; font-size: 0.9rem; font-weight: 600; color: var(--text-muted);">
+        <a href="index.html" style="color:var(--primary);"><i class="fas fa-home"></i> Home</a> / 
+        <a href="medicines.html" style="color:var(--primary);">Catalogue</a> / 
+        <span id="breadcrumb-current" style="color:var(--text-muted);">Product</span>
+      </div>
+
+      <!-- Main product split, populated dynamically by products.js -->
+      <div class="product-details-container" style="display:grid; grid-template-columns: 450px 1fr; gap:48px;" id="product-detail-wrapper">
+        <!-- Loader Fallback -->
+        <div class="shimmer" style="height:350px; border-radius:var(--radius-lg);"></div>
+        <div style="display:flex; flex-direction:column; gap:20px;">
+          <div class="shimmer" style="height:40px; width:60%; border-radius:var(--radius-sm);"></div>
+          <div class="shimmer" style="height:25px; width:40%; border-radius:var(--radius-sm);"></div>
+          <div class="shimmer" style="height:80px; width:100%; border-radius:var(--radius-sm);"></div>
+          <div class="shimmer" style="height:50px; width:80%; border-radius:var(--radius-sm);"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="logo" style="margin-bottom:16px;">
+            <div class="logo-icon" style="background:rgba(22, 163, 74, 0.2);">
+              <i class="fas fa-prescription-bottle-alt" style="color:var(--primary);"></i>
+            </div>
+            <div class="logo-text">
+              <h1 style="color:white;">Sri Durga</h1>
+              <span style="color:#64748b;">Medical & General Stores</span>
+            </div>
+          </div>
+          <p data-translate="footer_text">Sri Durga Medical & General Stores - Dedicated to serving our local communities with authentic medicines, healthcare products, and compassionate advice.</p>
+          <div class="social-links">
+            <a href="#" class="social-btn"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social-btn"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-btn"><i class="fab fa-instagram"></i></a>
+          </div>
+        </div>
+
+        <div class="footer-links">
+          <h4 data-translate="nav_home">Navigation</h4>
+          <ul>
+            <li><a href="index.html" data-translate="nav_home">Home</a></li>
+            <li><a href="medicines.html" data-translate="nav_medicines">Medicines</a></li>
+            <li><a href="upload-prescription.html" data-translate="nav_prescription">Upload Prescription</a></li>
+            <li><a href="offers.html" data-translate="nav_offers">Offers</a></li>
+            <li><a href="contact.html" data-translate="nav_contact">Contact</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-links">
+          <h4 data-translate="store_timings">Store Timings</h4>
+          <p style="margin-bottom:12px;"><i class="far fa-clock icon" style="color:var(--primary); margin-right:8px;"></i> <strong data-translate="open_24_7">Open 24 Hours / 7 Days</strong></p>
+          <p style="font-size:0.85rem; color:#64748b; line-height:1.4;">Registered Pharmacist always available on duty to review your medical needs.</p>
+        </div>
+
+        <div class="footer-contact">
+          <h4 data-translate="delivery_locations">Delivery Locations</h4>
+          <p style="font-size:0.9rem;" data-translate="telangana_villages"><i class="fas fa-map-marker-alt icon"></i> Narsampet, Chennaraopet, Nekonda, Geesugonda & surrounding areas.</p>
+          <p style="font-size:0.9rem;" data-translate="emergency_contact"><i class="fas fa-phone-alt icon"></i> Emergency Mobile: +91 9876543210</p>
+          <div class="map-wrapper">
+            <div style="width:100%; height:100%; background:#1e293b; display:flex; align-items:center; justify-content:center; color:#94a3b8; font-size:0.8rem; text-align:center; padding:10px;">
+              <div>
+                <i class="fas fa-map-marked-alt" style="font-size:1.8rem; color:var(--primary); margin-bottom:6px;"></i>
+                <p>Narsampet Road, Chennaraopet,<br>Warangal, Telangana - 506332</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2026 Sri Durga Medical & General Stores. <span data-translate="rights_reserved">All Rights Reserved.</span></p>
+        <p>Designed with <i class="fas fa-heart" style="color:var(--danger);"></i> for local care.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- FLOATING QUICK CALL BUTTON FOR EMERGENCIES -->
+  <a href="tel:+919876543210" class="floating-call" title="Emergency Call Stores"><i class="fas fa-phone-alt"></i></a>
+
+  <!-- FLOATING WHATSAPP BUTTON FOR QUICK CHATS -->
+  <a href="https://wa.me/919876543210" class="floating-whatsapp" target="_blank" title="Chat via WhatsApp"><i class="fab fa-whatsapp"></i></a>
+
+  <!-- Core Javascript Controllers -->
+  <script src="js/main.js"></script>
+  <script src="js/darkmode.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/products.js"></script>
+  <script src="js/search.js"></script>
+  <script src="js/voice-search.js"></script>
+  <script src="js/animations.js"></script>
+
+  <!-- Breadcrumb Dynamic Sync script -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // Sync breadcrumb text once products.js updates titles
+      setTimeout(() => {
+        const titleNode = document.querySelector("#product-detail-wrapper h2");
+        const breadcrumb = document.getElementById("breadcrumb-current");
+        if (titleNode && breadcrumb) {
+          breadcrumb.textContent = titleNode.textContent;
+        }
+      }, 500);
+    });
+  </script>
+</body>
+</html>

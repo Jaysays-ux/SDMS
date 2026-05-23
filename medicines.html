@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Medicines Catalogue | Sri Durga Medical & General Stores</title>
+  
+  <meta name="description" content="Browse and search for authentic medicines, syrups, baby care products, and medical equipment at Sri Durga Medical Store. Voice search available.">
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Custom Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="css/darkmode.css">
+  <link rel="stylesheet" href="css/animations.css">
+</head>
+<body>
+
+  <!-- Global Loading Spinner -->
+  <div id="global-spinner">
+    <div class="spinner-icon"></div>
+    <span class="spinner-text">Loading Catalogue...</span>
+  </div>
+
+  <!-- STICKY NAVBAR -->
+  <header class="navbar">
+    <div class="container navbar-container">
+      <a href="index.html" class="logo">
+        <div class="logo-icon">
+          <i class="fas fa-prescription-bottle-alt"></i>
+        </div>
+        <div class="logo-text">
+          <h1>Sri Durga</h1>
+          <span data-translate="hero_open_badge">Open 24/7</span>
+        </div>
+      </a>
+
+      <!-- Navigation Links -->
+      <nav class="nav-links">
+        <a href="index.html" data-translate="nav_home">Home</a>
+        <a href="medicines.html" class="active" data-translate="nav_medicines">Medicines</a>
+        <a href="upload-prescription.html" data-translate="nav_prescription">Upload Prescription</a>
+        <a href="offers.html" data-translate="nav_offers">Offers</a>
+        <a href="contact.html" data-translate="nav_contact">Contact</a>
+        <a href="dashboard.html" data-translate="nav_dashboard">Admin</a>
+      </nav>
+
+      <!-- Navigation Actions -->
+      <div class="nav-actions">
+        <button id="lang-toggle" class="language-btn">తెలుగు</button>
+        <button id="dark-toggle" class="btn-icon" title="Switch Theme"><i class="fas fa-moon"></i></button>
+        
+        <div class="cart-icon-wrapper">
+          <a href="cart.html" class="btn-icon" title="View Cart">
+            <i class="fas fa-shopping-basket"></i>
+            <span class="cart-count">0</span>
+          </a>
+        </div>
+
+        <a href="https://wa.me/919876543210" target="_blank" class="btn btn-whatsapp" style="padding: 10px 18px; font-size: 0.85rem; display: inline-flex;">
+          <i class="fab fa-whatsapp"></i> <span data-translate="whatsapp_now">WhatsApp Now</span>
+        </a>
+
+        <div class="menu-toggle">
+          <i class="fas fa-bars"></i>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- SEARCH & CATEGORY BAR -->
+  <section class="section-padding" style="padding-top: 40px; padding-bottom: 20px; background-color: var(--white); border-bottom: 1px solid var(--border);">
+    <div class="container">
+      <div class="search-controls" style="display:flex; gap:16px; align-items:center; flex-wrap:wrap; margin-bottom:24px;">
+        <!-- Search bar input with Voice hook -->
+        <div class="search-input-field" style="position:relative; flex-grow:1; display:flex; align-items:center; background:var(--background); border:2px solid var(--border); border-radius:var(--radius-md); padding:0 12px; box-shadow:var(--shadow-sm);">
+          <i class="fas fa-search" style="color:var(--text-muted);"></i>
+          <input type="text" id="catalog-search" placeholder="Type medicine name or use microphone..." class="live-search-field" style="width:100%; padding:14px 12px; font-size:1rem; border:none; outline:none; background:transparent; color:var(--text);">
+          <button id="btn-voice-search" title="Voice Search" style="width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:var(--primary); transition:var(--transition);">
+            <i class="fas fa-microphone"></i>
+          </button>
+        </div>
+
+        <!-- Sorting dropdown menu -->
+        <div class="sort-wrapper" style="display:flex; align-items:center; gap:8px;">
+          <span style="font-weight:600; font-size:0.9rem; color:var(--text-muted); white-space:nowrap;">Sort By:</span>
+          <select id="filter-sort" class="form-control" style="width:180px; padding:12px; border-radius:var(--radius-md); border:1.5px solid var(--border); font-weight:600;">
+            <option value="name">Name (A-Z)</option>
+            <option value="price-low">Price: Low to High</option>
+            <option value="price-high">Price: High to Low</option>
+            <option value="rating">Top Rated</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Horizontal Category Tabs -->
+      <div class="category-tabs-container" style="display:flex; gap:12px; overflow-x:auto; padding-bottom:12px; -webkit-overflow-scrolling:touch; border-bottom: 1px solid var(--border);">
+        <button class="category-tab-btn active" data-category="all" style="padding:10px 20px; font-family:var(--font-heading); font-weight:700; border-radius:var(--radius-full); border:1px solid var(--border); background:var(--white); transition:var(--transition); white-space:nowrap; cursor:pointer;">All Products</button>
+        <button class="category-tab-btn" data-category="tablets" style="padding:10px 20px; font-family:var(--font-heading); font-weight:700; border-radius:var(--radius-full); border:1px solid var(--border); background:var(--white); transition:var(--transition); white-space:nowrap; cursor:pointer;">Tablets</button>
+        <button class="category-tab-btn" data-category="syrups" style="padding:10px 20px; font-family:var(--font-heading); font-weight:700; border-radius:var(--radius-full); border:1px solid var(--border); background:var(--white); transition:var(--transition); white-space:nowrap; cursor:pointer;">Syrups</button>
+        <button class="category-tab-btn" data-category="baby care" style="padding:10px 20px; font-family:var(--font-heading); font-weight:700; border-radius:var(--radius-full); border:1px solid var(--border); background:var(--white); transition:var(--transition); white-space:nowrap; cursor:pointer;">Baby Care</button>
+        <button class="category-tab-btn" data-category="skin care" style="padding:10px 20px; font-family:var(--font-heading); font-weight:700; border-radius:var(--radius-full); border:1px solid var(--border); background:var(--white); transition:var(--transition); white-space:nowrap; cursor:pointer;">Skin Care</button>
+        <button class="category-tab-btn" data-category="ayurvedic" style="padding:10px 20px; font-family:var(--font-heading); font-weight:700; border-radius:var(--radius-full); border:1px solid var(--border); background:var(--white); transition:var(--transition); white-space:nowrap; cursor:pointer;">Ayurvedic</button>
+        <button class="category-tab-btn" data-category="diabetic care" style="padding:10px 20px; font-family:var(--font-heading); font-weight:700; border-radius:var(--radius-full); border:1px solid var(--border); background:var(--white); transition:var(--transition); white-space:nowrap; cursor:pointer;">Diabetic Care</button>
+        <button class="category-tab-btn" data-category="general store" style="padding:10px 20px; font-family:var(--font-heading); font-weight:700; border-radius:var(--radius-full); border:1px solid var(--border); background:var(--white); transition:var(--transition); white-space:nowrap; cursor:pointer;">General Store</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- CATALOGUE BODY WITH SIDEBAR FILTER & GRID -->
+  <section class="section-padding" style="background-color: var(--background); padding-top: 40px;">
+    <div class="container" style="display:grid; grid-template-columns: 280px 1fr; gap:32px;" id="medicines-layout-split">
+      
+      <!-- Filters Sidebar panel -->
+      <aside class="filters-sidebar reveal reveal-left" style="background:var(--card-bg); border:1px solid var(--border); border-radius:var(--radius-md); padding:24px; box-shadow:var(--shadow-sm); height:fit-content; position:sticky; top:100px; z-index:10;">
+        <div style="display:flex; justify-content:between; align-items:center; margin-bottom:24px; border-bottom:1px solid var(--border); padding-bottom:12px;">
+          <h3 style="font-size:1.25rem;"><i class="fas fa-filter" style="color:var(--primary); margin-right:8px;"></i> Filters</h3>
+          <button onclick="resetAllFilters()" style="font-size:0.8rem; font-weight:600; color:var(--secondary); hover:underline;">Clear All</button>
+        </div>
+
+        <!-- Filter item: Price range slider -->
+        <div class="filter-group" style="margin-bottom:28px;">
+          <h4 style="font-size:0.95rem; margin-bottom:12px;">Max Price Range</h4>
+          <input type="range" id="filter-price" min="10" max="1000" value="1000" style="width:100%; accent-color:var(--primary); cursor:pointer;">
+          <div style="display:flex; justify-content:space-between; font-size:0.8rem; color:var(--text-muted); font-weight:600; margin-top:8px;">
+            <span>₹10</span>
+            <span id="price-value" style="color:var(--primary); font-weight:700; font-size:0.9rem;">₹1000</span>
+            <span>₹1000</span>
+          </div>
+        </div>
+
+        <!-- Filter item: Prescription Check -->
+        <div class="filter-group" style="margin-bottom:24px;">
+          <h4 style="font-size:0.95rem; margin-bottom:12px;">Prescription Required</h4>
+          <label style="display:flex; align-items:center; gap:10px; font-size:0.9rem; font-weight:500; cursor:pointer; color:var(--text);">
+            <input type="checkbox" id="filter-rx" style="width:18px; height:18px; accent-color:var(--primary); cursor:pointer;">
+            Requires prescription (Rx)
+          </label>
+        </div>
+
+        <!-- Filter item: Stock Availability -->
+        <div class="filter-group" style="margin-bottom:24px;">
+          <h4 style="font-size:0.95rem; margin-bottom:12px;">Availability Status</h4>
+          <label style="display:flex; align-items:center; gap:10px; font-size:0.9rem; font-weight:500; cursor:pointer; color:var(--text);">
+            <input type="checkbox" id="filter-stock" style="width:18px; height:18px; accent-color:var(--primary); cursor:pointer;">
+            Only In-Stock items
+          </label>
+        </div>
+
+        <div style="background-color:var(--primary-light); padding:16px; border-radius:var(--radius-sm); border:1px dashed var(--primary); text-align:center;">
+          <i class="fas fa-prescription" style="font-size:1.8rem; color:var(--primary); margin-bottom:8px;"></i>
+          <h5 style="font-size:0.85rem; margin-bottom:4px;">Have a doctor's list?</h5>
+          <a href="upload-prescription.html" style="font-size:0.8rem; font-weight:700; color:var(--primary); display:block; text-decoration:underline;">Quick Upload prescription</a>
+        </div>
+      </aside>
+
+      <!-- Main Catalog Display -->
+      <main style="display:flex; flex-direction:column; gap:24px;">
+        <div class="medicine-grid" id="catalogue-grid">
+          <!-- Injected Dynamically by search.js / products.js -->
+          <div class="shimmer" style="height:320px; border-radius:var(--radius-md);"></div>
+          <div class="shimmer" style="height:320px; border-radius:var(--radius-md);"></div>
+          <div class="shimmer" style="height:320px; border-radius:var(--radius-md);"></div>
+          <div class="shimmer" style="height:320px; border-radius:var(--radius-md);"></div>
+        </div>
+      </main>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="logo" style="margin-bottom:16px;">
+            <div class="logo-icon" style="background:rgba(22, 163, 74, 0.2);">
+              <i class="fas fa-prescription-bottle-alt" style="color:var(--primary);"></i>
+            </div>
+            <div class="logo-text">
+              <h1 style="color:white;">Sri Durga</h1>
+              <span style="color:#64748b;">Medical & General Stores</span>
+            </div>
+          </div>
+          <p data-translate="footer_text">Sri Durga Medical & General Stores - Dedicated to serving our local communities with authentic medicines, healthcare products, and compassionate advice.</p>
+          <div class="social-links">
+            <a href="#" class="social-btn"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social-btn"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-btn"><i class="fab fa-instagram"></i></a>
+          </div>
+        </div>
+
+        <div class="footer-links">
+          <h4 data-translate="nav_home">Navigation</h4>
+          <ul>
+            <li><a href="index.html" data-translate="nav_home">Home</a></li>
+            <li><a href="medicines.html" data-translate="nav_medicines">Medicines</a></li>
+            <li><a href="upload-prescription.html" data-translate="nav_prescription">Upload Prescription</a></li>
+            <li><a href="offers.html" data-translate="nav_offers">Offers</a></li>
+            <li><a href="contact.html" data-translate="nav_contact">Contact</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-links">
+          <h4 data-translate="store_timings">Store Timings</h4>
+          <p style="margin-bottom:12px;"><i class="far fa-clock icon" style="color:var(--primary); margin-right:8px;"></i> <strong data-translate="open_24_7">Open 24 Hours / 7 Days</strong></p>
+          <p style="font-size:0.85rem; color:#64748b; line-height:1.4;">Registered Pharmacist always available on duty to review your medical needs.</p>
+        </div>
+
+        <div class="footer-contact">
+          <h4 data-translate="delivery_locations">Delivery Locations</h4>
+          <p style="font-size:0.9rem;" data-translate="telangana_villages"><i class="fas fa-map-marker-alt icon"></i> Narsampet, Chennaraopet, Nekonda, Geesugonda & surrounding areas.</p>
+          <p style="font-size:0.9rem;" data-translate="emergency_contact"><i class="fas fa-phone-alt icon"></i> Emergency Mobile: +91 9876543210</p>
+          <div class="map-wrapper">
+            <div style="width:100%; height:100%; background:#1e293b; display:flex; align-items:center; justify-content:center; color:#94a3b8; font-size:0.8rem; text-align:center; padding:10px;">
+              <div>
+                <i class="fas fa-map-marked-alt" style="font-size:1.8rem; color:var(--primary); margin-bottom:6px;"></i>
+                <p>Narsampet Road, Chennaraopet,<br>Warangal, Telangana - 506332</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2026 Sri Durga Medical & General Stores. <span data-translate="rights_reserved">All Rights Reserved.</span></p>
+        <p>Designed with <i class="fas fa-heart" style="color:var(--danger);"></i> for local care.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- FLOATING QUICK CALL BUTTON FOR EMERGENCIES -->
+  <a href="tel:+919876543210" class="floating-call" title="Emergency Call Stores"><i class="fas fa-phone-alt"></i></a>
+
+  <!-- FLOATING WHATSAPP BUTTON FOR QUICK CHATS -->
+  <a href="https://wa.me/919876543210" class="floating-whatsapp" target="_blank" title="Chat via WhatsApp"><i class="fab fa-whatsapp"></i></a>
+
+  <!-- Core Javascript Controllers -->
+  <script src="js/main.js"></script>
+  <script src="js/darkmode.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/products.js"></script>
+  <script src="js/search.js"></script>
+  <script src="js/voice-search.js"></script>
+  <script src="js/animations.js"></script>
+
+  <!-- Page level filter utilities -->
+  <script>
+    function resetAllFilters() {
+      const priceSlider = document.getElementById("filter-price");
+      const rxCheck = document.getElementById("filter-rx");
+      const stockCheck = document.getElementById("filter-stock");
+      const searchInput = document.getElementById("catalog-search");
+      const sortSelect = document.getElementById("filter-sort");
+      const tabs = document.querySelectorAll(".category-tab-btn");
+
+      if (priceSlider) priceSlider.value = 1000;
+      if (rxCheck) rxCheck.checked = false;
+      if (stockCheck) stockCheck.checked = false;
+      if (searchInput) searchInput.value = "";
+      if (sortSelect) sortSelect.value = "name";
+
+      tabs.forEach((tab, idx) => {
+        if (idx === 0) tab.classList.add("active");
+        else tab.classList.remove("active");
+      });
+
+      // Reload list
+      const catalogInput = document.getElementById("catalog-search");
+      if (catalogInput) {
+        catalogInput.dispatchEvent(new Event("input"));
+      }
+      showToast("All filters cleared!", "info");
+    }
+
+    // Toggle Sidebar active styles on small mobile screens
+    document.addEventListener("DOMContentLoaded", () => {
+      const grid = document.getElementById("catalogue-grid");
+      const layout = document.getElementById("medicines-layout-split");
+      
+      // Inject mobile filter trigger button
+      if (window.innerWidth <= 768 && layout) {
+        const trigger = document.createElement("button");
+        trigger.className = "btn btn-outline";
+        trigger.innerHTML = `<i class="fas fa-filter"></i> Toggle Filter Sidebar`;
+        trigger.style = "width:100%; margin-bottom:16px; font-weight:700;";
+        
+        const mainNode = layout.querySelector("main");
+        layout.insertBefore(trigger, mainNode);
+
+        const sidebar = layout.querySelector("aside");
+        if (sidebar) {
+          sidebar.style.display = "none";
+          sidebar.style.position = "static";
+          sidebar.style.width = "100%";
+          
+          trigger.addEventListener("click", () => {
+            if (sidebar.style.display === "none") {
+              sidebar.style.display = "block";
+              trigger.innerHTML = `<i class="fas fa-times"></i> Close Filter Sidebar`;
+            } else {
+              sidebar.style.display = "none";
+              trigger.innerHTML = `<i class="fas fa-filter"></i> Toggle Filter Sidebar`;
+            }
+          });
+        }
+      }
+    });
+  </script>
+</body>
+</html>

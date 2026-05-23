@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard | Sri Durga Medical Stores</title>
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Custom Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="css/darkmode.css">
+  <link rel="stylesheet" href="css/animations.css">
+
+  <style>
+    /* Dashboard-specific CSS layout definitions */
+    .dashboard-wrapper {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      min-height: 80vh;
+      background: var(--background);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    .dashboard-sidebar {
+      background: var(--card-bg);
+      border-right: 1px solid var(--border);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .sidebar-menu {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .sidebar-link {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      border-radius: var(--radius-sm);
+      color: var(--text-muted);
+      transition: var(--transition);
+      cursor: pointer;
+    }
+
+    .sidebar-link:hover,
+    .sidebar-link.active {
+      background: var(--primary-light);
+      color: var(--primary);
+    }
+
+    .dashboard-main {
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    /* KPI Summary Cards Grid */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    .stat-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .stat-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+    }
+
+    .stat-info h3 {
+      font-size: 1.5rem;
+      margin: 4px 0;
+    }
+
+    .stat-info span {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    /* Charts Container Layout */
+    .dashboard-charts-container {
+      display: grid;
+      grid-template-columns: 1.8fr 1.2fr;
+      gap: 24px;
+    }
+
+    .chart-panel-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .chart-panel-card h4 {
+      font-size: 1.1rem;
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 10px;
+    }
+
+    /* Table Panels list styling */
+    .table-box {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .table-box h4 {
+      font-size: 1.1rem;
+      margin-bottom: 16px;
+    }
+
+    .table-responsive {
+      overflow-x: auto;
+    }
+
+    .db-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.9rem;
+    }
+
+    .db-table th {
+      padding: 12px;
+      background: var(--background);
+      color: var(--text-muted);
+      font-weight: 700;
+      border-bottom: 2px solid var(--border);
+      text-transform: uppercase;
+      font-size: 0.8rem;
+    }
+
+    .db-table td {
+      padding: 14px 12px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+      font-weight: 600;
+    }
+
+    .status-badge {
+      padding: 4px 8px;
+      border-radius: var(--radius-sm);
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .status-pending { background: #fef3c7; color: #d97706; }
+    .status-dispatched { background: #dcfce7; color: #16a34a; }
+  </style>
+</head>
+<body>
+
+  <!-- Global Loading Spinner -->
+  <div id="global-spinner">
+    <div class="spinner-icon"></div>
+    <span class="spinner-text">Rehydrating Store metrics...</span>
+  </div>
+
+  <!-- STICKY NAVBAR -->
+  <header class="navbar">
+    <div class="container navbar-container">
+      <a href="index.html" class="logo">
+        <div class="logo-icon">
+          <i class="fas fa-prescription-bottle-alt"></i>
+        </div>
+        <div class="logo-text">
+          <h1>Sri Durga</h1>
+          <span data-translate="hero_open_badge">Open 24/7</span>
+        </div>
+      </a>
+
+      <!-- Navigation Links -->
+      <nav class="nav-links">
+        <a href="index.html" data-translate="nav_home">Home</a>
+        <a href="medicines.html" data-translate="nav_medicines">Medicines</a>
+        <a href="upload-prescription.html" data-translate="nav_prescription">Upload Prescription</a>
+        <a href="offers.html" data-translate="nav_offers">Offers</a>
+        <a href="contact.html" data-translate="nav_contact">Contact</a>
+        <a href="dashboard.html" class="active" data-translate="nav_dashboard">Admin</a>
+      </nav>
+
+      <!-- Navigation Actions -->
+      <div class="nav-actions">
+        <button id="lang-toggle" class="language-btn">తెలుగు</button>
+        <button id="dark-toggle" class="btn-icon" title="Switch Theme"><i class="fas fa-moon"></i></button>
+        
+        <div class="cart-icon-wrapper">
+          <a href="cart.html" class="btn-icon" title="View Cart">
+            <i class="fas fa-shopping-basket"></i>
+            <span class="cart-count">0</span>
+          </a>
+        </div>
+
+        <a href="https://wa.me/919876543210" target="_blank" class="btn btn-whatsapp" style="padding: 10px 18px; font-size: 0.85rem; display: inline-flex;">
+          <i class="fab fa-whatsapp"></i> <span data-translate="whatsapp_now">WhatsApp Now</span>
+        </a>
+
+        <div class="menu-toggle">
+          <i class="fas fa-bars"></i>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- DASHBOARD CONTAINER GRID -->
+  <section class="section-padding" style="background-color: var(--white); min-height: 80vh;">
+    <div class="container">
+      <div class="dashboard-wrapper">
+        
+        <!-- Left: Sidebar menu items -->
+        <aside class="dashboard-sidebar">
+          <div style="text-align:center; padding-bottom:20px; border-bottom:1px solid var(--border);">
+            <div style="width:70px; height:70px; border-radius:50%; background:var(--primary-light); color:var(--primary); font-size:2rem; display:flex; align-items:center; justify-content:center; margin:0 auto 12px auto;">
+              <i class="fas fa-user-shield"></i>
+            </div>
+            <h4 style="margin:0; font-size:1.1rem;">Store Manager</h4>
+            <span style="font-size:0.75rem; color:var(--text-muted); font-weight:600;">Chennaraopet Outlet</span>
+          </div>
+
+          <div class="sidebar-menu">
+            <div class="sidebar-link active"><i class="fas fa-chart-line"></i> Dashboard</div>
+            <div class="sidebar-link" onclick="showToast('Section available in backend release!','info')"><i class="fas fa-shopping-cart"></i> Orders</div>
+            <div class="sidebar-link" onclick="showToast('Section available in backend release!','info')"><i class="fas fa-capsules"></i> Medicines</div>
+            <div class="sidebar-link" onclick="showToast('Section available in backend release!','info')"><i class="fas fa-users"></i> Customers</div>
+            <div class="sidebar-link" onclick="showToast('Section available in backend release!','info')"><i class="fas fa-cubes"></i> Inventory</div>
+            <div class="sidebar-link" onclick="showToast('Section available in backend release!','info')"><i class="fas fa-analytics"></i> Analytics</div>
+            <div class="sidebar-link" onclick="showToast('Section available in backend release!','info')"><i class="fas fa-tag"></i> Offers</div>
+          </div>
+        </aside>
+
+        <!-- Right: Main stats panels and charts scroll -->
+        <main class="dashboard-main">
+          
+          <!-- Heading -->
+          <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border); padding-bottom:16px;">
+            <div>
+              <h2 style="font-size:1.6rem; font-family:var(--font-heading);">Sales Analytics</h2>
+              <span style="font-size:0.85rem; color:var(--text-muted);">Real-time monitoring panel for Sri Durga Medical Stores</span>
+            </div>
+            <button class="btn btn-outline" style="padding:8px 16px; font-size:0.8rem;" onclick="location.reload();"><i class="fas fa-sync"></i> Refresh Data</button>
+          </div>
+
+          <!-- KPI Summary cards grid -->
+          <div class="dashboard-grid">
+            <!-- Card 1 -->
+            <div class="stat-card">
+              <div class="stat-icon" style="background:#dcfce7; color:#16a34a;"><i class="fas fa-shopping-basket"></i></div>
+              <div class="stat-info">
+                <span>Orders Today</span>
+                <h3>14</h3>
+                <span style="color:#16a34a; font-weight:700;"><i class="fas fa-arrow-trend-up"></i> +12% increase</span>
+              </div>
+            </div>
+            <!-- Card 2 -->
+            <div class="stat-card">
+              <div class="stat-icon" style="background:#eff6ff; color:#2563eb;"><i class="fas fa-indian-rupee-sign"></i></div>
+              <div class="stat-info">
+                <span>Revenue Today</span>
+                <h3>₹4,850.00</h3>
+                <span style="color:#2563eb; font-weight:700;"><i class="fas fa-arrow-trend-up"></i> +8% increase</span>
+              </div>
+            </div>
+            <!-- Card 3 -->
+            <div class="stat-card">
+              <div class="stat-icon" style="background:#fee2e2; color:#ef4444;"><i class="fas fa-exclamation-triangle"></i></div>
+              <div class="stat-info">
+                <span>Low Stock Alerts</span>
+                <h3>3 Items</h3>
+                <span style="color:#ef4444; font-weight:700;"><i class="fas fa-arrow-trend-down"></i> Immediate refill</span>
+              </div>
+            </div>
+            <!-- Card 4 -->
+            <div class="stat-card">
+              <div class="stat-icon" style="background:#fef3c7; color:#d97706;"><i class="fas fa-users"></i></div>
+              <div class="stat-info">
+                <span>Active Customers</span>
+                <h3>1,420</h3>
+                <span style="color:#d97706; font-weight:700;"><i class="fas fa-user-plus"></i> +45 new today</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Analytics Charts container -->
+          <div class="dashboard-charts-container">
+            <!-- Line Chart (Sales Trend) -->
+            <div class="chart-panel-card">
+              <h4>Sales Trend (Last 7 Days)</h4>
+              <canvas id="salesLineChart" height="200"></canvas>
+            </div>
+            <!-- Doughnut Chart (Categories) -->
+            <div class="chart-panel-card">
+              <h4>Category Sales Share</h4>
+              <canvas id="categoryDoughnutChart" height="200"></canvas>
+            </div>
+          </div>
+
+          <!-- Lists grids split -->
+          <div style="display:grid; grid-template-columns:1.2fr 0.8fr; gap:24px;">
+            <!-- Recent Orders log -->
+            <div class="table-box">
+              <h4>Recent Orders Log</h4>
+              <div class="table-responsive">
+                <table class="db-table">
+                  <thead>
+                    <tr>
+                      <th>Order ID</th>
+                      <th>Customer Name</th>
+                      <th>Village</th>
+                      <th>Amount</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>#SD-5012</td>
+                      <td>Sai Kumar</td>
+                      <td>Narsampet</td>
+                      <td>₹180.00</td>
+                      <td><span class="status-badge status-dispatched">Dispatched</span></td>
+                    </tr>
+                    <tr>
+                      <td>#SD-5013</td>
+                      <td>Laxmi Prasad</td>
+                      <td>Chennaraopet</td>
+                      <td>₹420.00</td>
+                      <td><span class="status-badge status-pending">Pending Rx Check</span></td>
+                    </tr>
+                    <tr>
+                      <td>#SD-5014</td>
+                      <td>Anji Reddy</td>
+                      <td>Nekonda</td>
+                      <td>₹950.00</td>
+                      <td><span class="status-badge status-dispatched">Dispatched</span></td>
+                    </tr>
+                    <tr>
+                      <td>#SD-5015</td>
+                      <td>Saritha V.</td>
+                      <td>Geesugonda</td>
+                      <td>₹120.00</td>
+                      <td><span class="status-badge status-pending">Pending Dispatch</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Stock Alerts Panel -->
+            <div class="table-box">
+              <h4>Low-Stock Alert List</h4>
+              <div class="table-responsive">
+                <table class="db-table">
+                  <thead>
+                    <tr>
+                      <th>Medicine Name</th>
+                      <th>Qty Left</th>
+                      <th>Refill</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td style="color:var(--danger);">Telmisartan 40mg (Telma)</td>
+                      <td>4 Tablets</td>
+                      <td><button class="btn btn-outline" style="padding:4px 8px; font-size:0.7rem;" onclick="showToast('Refill request compiled!')">Order</button></td>
+                    </tr>
+                    <tr>
+                      <td style="color:var(--warning);">Corex DX Syrup</td>
+                      <td>12 Bottles</td>
+                      <td><button class="btn btn-outline" style="padding:4px 8px; font-size:0.7rem;" onclick="showToast('Refill request compiled!')">Order</button></td>
+                    </tr>
+                    <tr>
+                      <td style="color:var(--warning);">Sebamed Baby Wash</td>
+                      <td>8 Units</td>
+                      <td><button class="btn btn-outline" style="padding:4px 8px; font-size:0.7rem;" onclick="showToast('Refill request compiled!')">Order</button></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+        </main>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="logo" style="margin-bottom:16px;">
+            <div class="logo-icon" style="background:rgba(22, 163, 74, 0.2);">
+              <i class="fas fa-prescription-bottle-alt" style="color:var(--primary);"></i>
+            </div>
+            <div class="logo-text">
+              <h1 style="color:white;">Sri Durga</h1>
+              <span style="color:#64748b;">Medical & General Stores</span>
+            </div>
+          </div>
+          <p data-translate="footer_text">Sri Durga Medical & General Stores - Dedicated to serving our local communities with authentic medicines, healthcare products, and compassionate advice.</p>
+          <div class="social-links">
+            <a href="#" class="social-btn"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social-btn"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-btn"><i class="fab fa-instagram"></i></a>
+          </div>
+        </div>
+
+        <div class="footer-links">
+          <h4 data-translate="nav_home">Navigation</h4>
+          <ul>
+            <li><a href="index.html" data-translate="nav_home">Home</a></li>
+            <li><a href="medicines.html" data-translate="nav_medicines">Medicines</a></li>
+            <li><a href="upload-prescription.html" data-translate="nav_prescription">Upload Prescription</a></li>
+            <li><a href="offers.html" data-translate="nav_offers">Offers</a></li>
+            <li><a href="contact.html" data-translate="nav_contact">Contact</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-links">
+          <h4 data-translate="store_timings">Store Timings</h4>
+          <p style="margin-bottom:12px;"><i class="far fa-clock icon" style="color:var(--primary); margin-right:8px;"></i> <strong data-translate="open_24_7">Open 24 Hours / 7 Days</strong></p>
+          <p style="font-size:0.85rem; color:#64748b; line-height:1.4;">Registered Pharmacist always available on duty to review your medical needs.</p>
+        </div>
+
+        <div class="footer-contact">
+          <h4 data-translate="delivery_locations">Delivery Locations</h4>
+          <p style="font-size:0.9rem;" data-translate="telangana_villages"><i class="fas fa-map-marker-alt icon"></i> Narsampet, Chennaraopet, Nekonda, Geesugonda & surrounding areas.</p>
+          <p style="font-size:0.9rem;" data-translate="emergency_contact"><i class="fas fa-phone-alt icon"></i> Emergency Mobile: +91 9876543210</p>
+          <div class="map-wrapper">
+            <div style="width:100%; height:100%; background:#1e293b; display:flex; align-items:center; justify-content:center; color:#94a3b8; font-size:0.8rem; text-align:center; padding:10px;">
+              <div>
+                <i class="fas fa-map-marked-alt" style="font-size:1.8rem; color:var(--primary); margin-bottom:6px;"></i>
+                <p>Narsampet Road, Chennaraopet,<br>Warangal, Telangana - 506332</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2026 Sri Durga Medical & General Stores. <span data-translate="rights_reserved">All Rights Reserved.</span></p>
+        <p>Designed with <i class="fas fa-heart" style="color:var(--danger);"></i> for local care.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Core Javascript Controllers -->
+  <script src="js/main.js"></script>
+  <script src="js/darkmode.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/products.js"></script>
+  <script src="js/search.js"></script>
+  <script src="js/voice-search.js"></script>
+  <script src="js/animations.js"></script>
+
+  <!-- Live Analytics Chart setups -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // 1. Line Chart setup (Sales Trends over 7 days)
+      const lineCtx = document.getElementById("salesLineChart").getContext("2d");
+      
+      const isDark = document.body.classList.contains("dark");
+      const textColor = isDark ? "#94a3b8" : "#64748b";
+      const gridColor = isDark ? "#334155" : "#e2e8f0";
+
+      const salesChart = new Chart(lineCtx, {
+        type: 'line',
+        data: {
+          labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+          datasets: [{
+            label: 'Sales Revenue (₹)',
+            data: [3200, 4100, 2900, 4800, 5200, 6100, 4850],
+            borderColor: '#16a34a',
+            backgroundColor: 'rgba(22, 163, 74, 0.1)',
+            tension: 0.3,
+            fill: true,
+            borderWidth: 3,
+            pointBackgroundColor: '#16a34a'
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { display: false }
+          },
+          scales: {
+            x: {
+              grid: { color: gridColor },
+              ticks: { color: textColor }
+            },
+            y: {
+              grid: { color: gridColor },
+              ticks: { color: textColor }
+            }
+          }
+        }
+      });
+
+      // 2. Doughnut Chart setup (Category composition)
+      const doughnutCtx = document.getElementById("categoryDoughnutChart").getContext("2d");
+      const categoryChart = new Chart(doughnutCtx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Tablets', 'Syrups', 'Baby Care', 'Skin Care', 'Ayurvedic', 'Diabetic'],
+          datasets: [{
+            data: [40, 20, 15, 10, 8, 7],
+            backgroundColor: [
+              '#16a34a', // Tablets (Forest green)
+              '#2563eb', // Syrups (Blue)
+              '#38bdf8', // Baby care (Sky blue)
+              '#fb923c', // Skin care (Orange)
+              '#a3e635', // Ayurvedic (Lime green)
+              '#f43f5e'  // Diabetic (Rose red)
+            ],
+            borderWidth: 0
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: { color: textColor, boxWidth: 12 }
+            }
+          }
+        }
+      });
+
+      // Listener on dark toggle to refresh chart visual designs
+      const darkToggle = document.getElementById("dark-toggle");
+      if (darkToggle) {
+        darkToggle.addEventListener("click", () => {
+          setTimeout(() => {
+            const isDarkNow = document.body.classList.contains("dark");
+            const newTextColor = isDarkNow ? "#94a3b8" : "#64748b";
+            const newGridColor = isDarkNow ? "#334155" : "#e2e8f0";
+
+            salesChart.options.scales.x.grid.color = newGridColor;
+            salesChart.options.scales.x.ticks.color = newTextColor;
+            salesChart.options.scales.y.grid.color = newGridColor;
+            salesChart.options.scales.y.ticks.color = newTextColor;
+            salesChart.update();
+
+            categoryChart.options.plugins.legend.labels.color = newTextColor;
+            categoryChart.update();
+          }, 100);
+        });
+      }
+    });
+  </script>
+</body>
+</html>

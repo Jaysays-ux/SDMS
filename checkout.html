@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout | Sri Durga Medical & General Stores</title>
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Custom Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="css/darkmode.css">
+  <link rel="stylesheet" href="css/animations.css">
+
+  <style>
+    .checkout-grid {
+      display: grid;
+      grid-template-columns: 1.6fr 1.4fr;
+      gap: 40px;
+      align-items: start;
+    }
+
+    .checkout-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 24px;
+    }
+
+    .checkout-card h3 {
+      font-size: 1.3rem;
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Tabbed Payment Option Layout */
+    .payment-tabs {
+      display: flex;
+      border-bottom: 2.5px solid var(--border);
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .pay-tab-btn {
+      padding: 12px 18px;
+      font-weight: 700;
+      color: var(--text-muted);
+      border-bottom: 3px solid transparent;
+      margin-bottom: -2.5px;
+      transition: var(--transition);
+      cursor: pointer;
+    }
+
+    .pay-tab-btn.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+    }
+
+    .pay-content {
+      display: none;
+      padding: 16px 0;
+    }
+
+    .pay-content.active {
+      display: block;
+    }
+
+    /* Summary list column */
+    .order-summary-list {
+      margin-bottom: 20px;
+      max-height: 250px;
+      overflow-y: auto;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      background: var(--background);
+    }
+
+    .order-summary-item {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .order-summary-item span:first-child {
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      max-width: 70%;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Global Loading Spinner -->
+  <div id="global-spinner">
+    <div class="spinner-icon"></div>
+    <span class="spinner-text">Preparing Secure Checkout...</span>
+  </div>
+
+  <!-- STICKY NAVBAR -->
+  <header class="navbar">
+    <div class="container navbar-container">
+      <a href="index.html" class="logo">
+        <div class="logo-icon">
+          <i class="fas fa-prescription-bottle-alt"></i>
+        </div>
+        <div class="logo-text">
+          <h1>Sri Durga</h1>
+          <span data-translate="hero_open_badge">Open 24/7</span>
+        </div>
+      </a>
+
+      <!-- Navigation Links -->
+      <nav class="nav-links">
+        <a href="index.html" data-translate="nav_home">Home</a>
+        <a href="medicines.html" data-translate="nav_medicines">Medicines</a>
+        <a href="upload-prescription.html" data-translate="nav_prescription">Upload Prescription</a>
+        <a href="offers.html" data-translate="nav_offers">Offers</a>
+        <a href="contact.html" data-translate="nav_contact">Contact</a>
+        <a href="dashboard.html" data-translate="nav_dashboard">Admin</a>
+      </nav>
+
+      <!-- Navigation Actions -->
+      <div class="nav-actions">
+        <button id="lang-toggle" class="language-btn">తెలుగు</button>
+        <button id="dark-toggle" class="btn-icon" title="Switch Theme"><i class="fas fa-moon"></i></button>
+        
+        <div class="cart-icon-wrapper">
+          <a href="cart.html" class="btn-icon" title="View Cart">
+            <i class="fas fa-shopping-basket"></i>
+            <span class="cart-count">0</span>
+          </a>
+        </div>
+
+        <a href="https://wa.me/919876543210" target="_blank" class="btn btn-whatsapp" style="padding: 10px 18px; font-size: 0.85rem; display: inline-flex;">
+          <i class="fab fa-whatsapp"></i> <span data-translate="whatsapp_now">WhatsApp Now</span>
+        </a>
+
+        <div class="menu-toggle">
+          <i class="fas fa-bars"></i>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CHECKOUT PAGE BODY -->
+  <section class="section-padding" style="background-color: var(--background); min-height: 80vh;">
+    <div class="container">
+      <h2 style="font-size: 2.2rem; margin-bottom: 8px; font-family:var(--font-heading);">Checkout</h2>
+      <p style="color:var(--text-muted); margin-bottom:40px;">Provide delivery particulars and submit order details directly to the store.</p>
+
+      <div class="checkout-grid" id="checkout-root">
+        
+        <!-- Left: Forms Address and Payments -->
+        <div>
+          <!-- Delivery Address Form -->
+          <div class="checkout-card">
+            <h3><i class="fas fa-shipping-fast" style="color:var(--primary);"></i> Delivery Address</h3>
+            <form id="checkout-address-form">
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+                <div class="form-group">
+                  <label for="cust-name">Patient / Customer Name *</label>
+                  <input type="text" id="cust-name" class="form-control" placeholder="e.g. Sai Kumar" required>
+                </div>
+                <div class="form-group">
+                  <label for="cust-phone">Mobile Phone Number *</label>
+                  <input type="tel" id="cust-phone" class="form-control" placeholder="e.g. 9876543210" pattern="[0-9]{10}" required>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="cust-address">Street / House Number *</label>
+                <input type="text" id="cust-address" class="form-control" placeholder="e.g. H.No 3-45, Ramalayam Veedhi" required>
+              </div>
+
+              <div style="display:grid; grid-template-columns:1.2fr 0.8fr; gap:16px;">
+                <div class="form-group">
+                  <label for="cust-village">Village / Town Dropdown *</label>
+                  <select id="cust-village" class="form-control" required style="font-weight:600;">
+                    <option value="" disabled selected>Select Village</option>
+                    <option value="Chennaraopet">Chennaraopet</option>
+                    <option value="Narsampet Town">Narsampet Town</option>
+                    <option value="Nekonda">Nekonda</option>
+                    <option value="Geesugonda">Geesugonda</option>
+                    <option value="Jammikunta">Jammikunta</option>
+                    <option value="Khanapuram">Khanapuram</option>
+                    <option value="Other nearby Village">Other Surrounding Village</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="cust-pin">PIN Code *</label>
+                  <input type="text" id="cust-pin" class="form-control" placeholder="506332" value="506332" required>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <!-- Mock Payment Systems -->
+          <div class="checkout-card">
+            <h3><i class="fas fa-wallet" style="color:var(--secondary);"></i> Select Payment Mode</h3>
+            <div class="payment-tabs">
+              <button class="pay-tab-btn active" onclick="switchPaymentTab(event, 'pay-upi')">UPI Scanner</button>
+              <button class="pay-tab-btn" onclick="switchPaymentTab(event, 'pay-cod')">Cash on Delivery</button>
+              <button class="pay-tab-btn" onclick="switchPaymentTab(event, 'pay-card')">Credit/Debit Card</button>
+            </div>
+
+            <!-- UPI content -->
+            <div id="pay-upi" class="pay-content active">
+              <div style="display:flex; gap:20px; align-items:center; flex-wrap:wrap;">
+                <!-- Simulated QR -->
+                <div style="width:120px; height:120px; border:2px solid var(--border); padding:8px; background:white; display:flex; align-items:center; justify-content:center;">
+                  <!-- Styled QR illustration with icons -->
+                  <div style="text-align:center; color:var(--text-muted);">
+                    <i class="fas fa-qrcode" style="font-size:4.5rem; color:var(--text);"></i>
+                  </div>
+                </div>
+                <div style="flex-grow:1; min-width:200px;">
+                  <h4 style="margin-bottom:8px;">Scan with any UPI App</h4>
+                  <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:12px;">Scan the store QR or write your UPI ID below. (Simulated Payment Sandbox)</p>
+                  <input type="text" placeholder="username@upi" class="form-control" style="max-width:280px;" id="cust-upi">
+                </div>
+              </div>
+            </div>
+
+            <!-- COD Content -->
+            <div id="pay-cod" class="pay-content">
+              <div style="display:flex; gap:16px; align-items:start;">
+                <div style="font-size:2.5rem; color:var(--primary);"><i class="fas fa-hand-holding-usd"></i></div>
+                <div>
+                  <h4 style="margin-bottom:6px;">Cash on Delivery (CoD)</h4>
+                  <p style="font-size:0.85rem; color:var(--text-muted);">Pay securely at your doorstep! Our delivery executive accepts cash payments or UPI scans when handing over your medicines in your village.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card Content -->
+            <div id="pay-card" class="pay-content">
+              <div style="display:flex; flex-direction:column; gap:12px; max-width:380px;">
+                <input type="text" placeholder="Card Holder Name" class="form-control">
+                <input type="text" placeholder="16-Digit Card Number" class="form-control">
+                <div style="display:grid; grid-template-columns:1fr 1.2fr; gap:12px;">
+                  <input type="text" placeholder="CVV" class="form-control">
+                  <input type="text" placeholder="MM/YY" class="form-control">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Order breakdowns and Compile action button -->
+        <aside class="checkout-card" style="height:fit-content; position:sticky; top:100px; z-index:10;">
+          <h3><i class="fas fa-receipt" style="color:var(--warning);"></i> Review Order</h3>
+          
+          <!-- Selected list items -->
+          <div class="order-summary-list" id="checkout-items-list">
+            <!-- Dynamically Hydrated -->
+          </div>
+
+          <div id="checkout-pricing-list" style="margin-bottom:24px;">
+            <!-- Dynamically Hydrated -->
+          </div>
+
+          <div style="background-color:#eff6ff; padding:16px; border-radius:var(--radius-md); border:1px solid #bfdbfe; margin-bottom:24px; font-size:0.85rem; color:var(--secondary); display:flex; gap:10px; align-items:start;">
+            <i class="fas fa-info-circle" style="font-size:1.1rem; margin-top:2px;"></i>
+            <p><strong>Note:</strong> Pressing place order opens WhatsApp to send your list to Sri Durga Store automatically. A pharmacist will verify prescription items upon delivery.</p>
+          </div>
+
+          <button onclick="processWhatsAppCheckout()" class="btn btn-whatsapp" style="width:100%; padding:14px; font-size:1.05rem; display:flex; justify-content:center; gap:10px;">
+            <i class="fab fa-whatsapp" style="font-size:1.3rem;"></i> Place Order via WhatsApp
+          </button>
+        </aside>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- SUCCESS POPUP MODAL -->
+  <div class="modal-overlay" id="checkout-success-modal">
+    <div class="modal-box text-center">
+      <div style="width:70px; height:70px; background:var(--primary-light); color:var(--primary); font-size:2.5rem; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 20px auto;">
+        <i class="fas fa-check-double"></i>
+      </div>
+      <h3 style="font-size:1.6rem; margin-bottom:12px;">Order Dispatched Successfully!</h3>
+      <p style="color:var(--text-muted); margin-bottom:24px;">We are compiling your order. You are being redirected to WhatsApp to complete confirmation.</p>
+      <button class="btn btn-primary" onclick="closeSuccessModal()">OK</button>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="logo" style="margin-bottom:16px;">
+            <div class="logo-icon" style="background:rgba(22, 163, 74, 0.2);">
+              <i class="fas fa-prescription-bottle-alt" style="color:var(--primary);"></i>
+            </div>
+            <div class="logo-text">
+              <h1 style="color:white;">Sri Durga</h1>
+              <span style="color:#64748b;">Medical & General Stores</span>
+            </div>
+          </div>
+          <p data-translate="footer_text">Sri Durga Medical & General Stores - Dedicated to serving our local communities with authentic medicines, healthcare products, and compassionate advice.</p>
+          <div class="social-links">
+            <a href="#" class="social-btn"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social-btn"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-btn"><i class="fab fa-instagram"></i></a>
+          </div>
+        </div>
+
+        <div class="footer-links">
+          <h4 data-translate="nav_home">Navigation</h4>
+          <ul>
+            <li><a href="index.html" data-translate="nav_home">Home</a></li>
+            <li><a href="medicines.html" data-translate="nav_medicines">Medicines</a></li>
+            <li><a href="upload-prescription.html" data-translate="nav_prescription">Upload Prescription</a></li>
+            <li><a href="offers.html" data-translate="nav_offers">Offers</a></li>
+            <li><a href="contact.html" data-translate="nav_contact">Contact</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-links">
+          <h4 data-translate="store_timings">Store Timings</h4>
+          <p style="margin-bottom:12px;"><i class="far fa-clock icon" style="color:var(--primary); margin-right:8px;"></i> <strong data-translate="open_24_7">Open 24 Hours / 7 Days</strong></p>
+          <p style="font-size:0.85rem; color:#64748b; line-height:1.4;">Registered Pharmacist always available on duty to review your medical needs.</p>
+        </div>
+
+        <div class="footer-contact">
+          <h4 data-translate="delivery_locations">Delivery Locations</h4>
+          <p style="font-size:0.9rem;" data-translate="telangana_villages"><i class="fas fa-map-marker-alt icon"></i> Narsampet, Chennaraopet, Nekonda, Geesugonda & surrounding areas.</p>
+          <p style="font-size:0.9rem;" data-translate="emergency_contact"><i class="fas fa-phone-alt icon"></i> Emergency Mobile: +91 9876543210</p>
+          <div class="map-wrapper">
+            <div style="width:100%; height:100%; background:#1e293b; display:flex; align-items:center; justify-content:center; color:#94a3b8; font-size:0.8rem; text-align:center; padding:10px;">
+              <div>
+                <i class="fas fa-map-marked-alt" style="font-size:1.8rem; color:var(--primary); margin-bottom:6px;"></i>
+                <p>Narsampet Road, Chennaraopet,<br>Warangal, Telangana - 506332</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2026 Sri Durga Medical & General Stores. <span data-translate="rights_reserved">All Rights Reserved.</span></p>
+        <p>Designed with <i class="fas fa-heart" style="color:var(--danger);"></i> for local care.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Core Javascript Controllers -->
+  <script src="js/main.js"></script>
+  <script src="js/darkmode.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/products.js"></script>
+  <script src="js/search.js"></script>
+  <script src="js/voice-search.js"></script>
+  <script src="js/animations.js"></script>
+
+  <!-- Checkout UI control scripts -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      renderCheckoutSummary();
+    });
+
+    function renderCheckoutSummary() {
+      const itemsList = document.getElementById("checkout-items-list");
+      const pricingList = document.getElementById("checkout-pricing-list");
+      
+      const cart = getCart();
+
+      if (cart.length === 0) {
+        const root = document.getElementById("checkout-root");
+        if (root) {
+          root.innerHTML = `
+            <div style="grid-column: 1/-1; text-align:center; padding: 60px 0; background:var(--card-bg); border:1px solid var(--border); border-radius:var(--radius-lg);">
+              <i class="fas fa-shopping-basket" style="font-size:4rem; color:var(--text-muted); margin-bottom:16px;"></i>
+              <h3>Your cart is empty!</h3>
+              <p style="margin-bottom:20px; color:var(--text-muted);">Please add items before visiting checkout.</p>
+              <a href="medicines.html" class="btn btn-primary">Browse Catalogue</a>
+            </div>
+          `;
+        }
+        return;
+      }
+
+      // 1. Render items list
+      if (itemsList) {
+        itemsList.innerHTML = "";
+        cart.forEach(item => {
+          const div = document.createElement("div");
+          div.className = "order-summary-item";
+          div.innerHTML = `
+            <span>${item.name} <small style="color:var(--text-muted);">x${item.quantity}</small></span>
+            <span>₹${(item.price * item.quantity).toFixed(2)}</span>
+          `;
+          itemsList.appendChild(div);
+        });
+      }
+
+      // 2. Render price breakdown list
+      if (pricingList) {
+        const bill = calculateBillDetails();
+        pricingList.innerHTML = `
+          <div class="summary-row">
+            <span>Subtotal</span>
+            <span>₹${bill.subtotal.toFixed(2)}</span>
+          </div>
+          <div class="summary-row">
+            <span>GST (5%)</span>
+            <span>₹${bill.gst.toFixed(2)}</span>
+          </div>
+          <div class="summary-row">
+            <span>Delivery Fee</span>
+            <span>${bill.deliveryFee === 0 ? '<strong class="color-primary">FREE</strong>' : '₹' + bill.deliveryFee.toFixed(2)}</span>
+          </div>
+          ${bill.promoApplied ? `
+            <div class="summary-row">
+              <span>Coupon Applied (${bill.promoApplied})</span>
+              <span class="color-danger">-₹${bill.discount.toFixed(2)}</span>
+            </div>
+          ` : ''}
+          <hr class="summary-divider">
+          <div class="summary-row" style="font-size:1.25rem; font-weight:800; color:var(--text);">
+            <span>Total Payable</span>
+            <span>₹${bill.grandTotal.toFixed(2)}</span>
+          </div>
+        `;
+      }
+    }
+
+    // Switch payment tabs
+    function switchPaymentTab(event, contentId) {
+      const parent = event.currentTarget.parentNode;
+      parent.querySelectorAll(".pay-tab-btn").forEach(btn => btn.classList.remove("active"));
+      event.currentTarget.classList.add("active");
+
+      const cardBody = parent.parentNode;
+      cardBody.querySelectorAll(".pay-content").forEach(c => c.classList.remove("active"));
+      const activeContent = document.getElementById(contentId);
+      if (activeContent) activeContent.classList.add("active");
+    }
+
+    // Process and submit direct order details to WhatsApp
+    let globalWhatsAppUrl = "";
+
+    function processWhatsAppCheckout() {
+      const form = document.getElementById("checkout-address-form");
+      
+      // Basic validity checking
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        showToast("Please fill in all address and contact details!", "error");
+        return;
+      }
+
+      const name = document.getElementById("cust-name").value;
+      const phone = document.getElementById("cust-phone").value;
+      const address = document.getElementById("cust-address").value;
+      const village = document.getElementById("cust-village").value;
+      const pin = document.getElementById("cust-pin").value;
+
+      // Extract Payment Method
+      const activePayTab = document.querySelector(".pay-tab-btn.active");
+      const payMethod = activePayTab ? activePayTab.textContent : "Not Specified";
+
+      const cart = getCart();
+      const bill = calculateBillDetails();
+
+      // Compile WhatsApp Message String
+      let itemsListStr = "";
+      cart.forEach((item, idx) => {
+        itemsListStr += `${idx + 1}. ${item.name} x ${item.quantity} (₹${(item.price * item.quantity).toFixed(2)})${item.prescriptionRequired ? ' *[Rx]*' : ''}\n`;
+      });
+
+      const messageText = 
+        `*Sri Durga Medical & General Stores - Order Request*\n` +
+        `-------------------------------------------------\n` +
+        `*Customer Details:*\n` +
+        `• *Name:* ${name}\n` +
+        `• *Mobile:* ${phone}\n` +
+        `• *Village/Town:* ${village}\n` +
+        `• *Full Address:* ${address}, PIN: ${pin}\n` +
+        `-------------------------------------------------\n` +
+        `*Items Ordered:*\n` +
+        itemsListStr +
+        `-------------------------------------------------\n` +
+        `*Payment Choice:* ${payMethod}\n` +
+        `*Subtotal:* ₹${bill.subtotal.toFixed(2)}\n` +
+        `*GST (5%):* ₹${bill.gst.toFixed(2)}\n` +
+        `*Delivery Charge:* ${bill.deliveryFee === 0 ? 'FREE' : '₹' + bill.deliveryFee.toFixed(2)}\n` +
+        (bill.promoApplied ? `*Coupon Discount (${bill.promoApplied}):* -₹${bill.discount.toFixed(2)}\n` : '') +
+        `*Total Payable:* ₹${bill.grandTotal.toFixed(2)}\n` +
+        `-------------------------------------------------\n` +
+        `Please prepare my medicines and confirm receipt. Thank you!`;
+
+      // Save global target link
+      globalWhatsAppUrl = `https://wa.me/919876543210?text=${encodeURIComponent(messageText)}`;
+
+      // Show success modal overlay
+      const modal = document.getElementById("checkout-success-modal");
+      if (modal) {
+        modal.classList.add("active");
+      }
+    }
+
+    function closeSuccessModal() {
+      // Clear cart
+      localStorage.removeItem("sdms_cart");
+      localStorage.removeItem("sdms_active_promo");
+      updateCartBadge();
+      
+      // Close Modal and open WhatsApp in new tab, then go home
+      const modal = document.getElementById("checkout-success-modal");
+      if (modal) modal.classList.remove("active");
+      
+      window.open(globalWhatsAppUrl, "_blank");
+      window.location.href = "index.html";
+    }
+  </script>
+</body>
+</html>
